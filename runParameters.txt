@@ -9,7 +9,8 @@ drying = False			# if False then no drying.  if >= 0 then the number of sim seco
 				# before drying starts
 generatePolymers= False		# Generate polymers in simulation
 initialSolidsLoading=.02
-simTime=	36000		# number of simulation seconds to execute. 0 = only initialize
+simTime=	0		# number of simulation seconds to execute. 0 = only initialize
+#originially 36000 seconds
 particleCount = 10		# Number of particles to run in simulation
 polymerPercent = 0   	# Percent of solid loading that is polymer
 stericLayerThickness = 0	# Steric Layer Thickness
@@ -17,7 +18,7 @@ temperature = 	368     	# temperature in K
 variableLengthPolymers= False	# Vary polymer length over time
 
 # Aggregate parameters
-particleRad=	   .025  	# Particle radius is Meters
+particleRad=	   .0025  	# Particle radius is Meters
 
 # Polymer Parameters
 latticeConstant= 0# lattice is on this grid size
@@ -57,8 +58,8 @@ writeOnSL=			# list of dumps based on SL.
 
 # Misc parameters.
 fluidDensity = 	0.997       	#  kg/m^3 
-particleRefractiveIndex = 1.910  #change later not sure
-fluidRefractiveIndex = 1.516
+particleRefractiveIndex = 1.51  
+fluidRefractiveIndex = 1.33
 rotationalFrequency = 0.895
 
 # Debug Stuff. 

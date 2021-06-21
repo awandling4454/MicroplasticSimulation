@@ -3,6 +3,10 @@
 Created on Thu May 18 13:22:24 2017
 aggDistanceOutBottom
 @author: Michelle
+
+editted on 6/21/2021
+
+by Allison Wandling
 """
 
 # \/ \/ \/ \/ \/ \/ \/ \/\/ \/ \/ \/ \/ \/ \/ \/\/ \/ \/ \/ \/ \/ \/ \/ 
@@ -161,6 +165,16 @@ def CalcSumRadiusMatrix(parameters, allParticles):
         rLst[k] = allParticles[k].r
         
     matrix = np.add.outer(rLst, rLst)
+    return(matrix)
+
+##########################################################################################
+def CalcDifferenceRadiusMatrix(parameters, allParticles):
+    rLst = np.full(len(allParticles), 0, dtype = parameters.doMathIn)
+    
+    for k in range(len(allParticles)):
+        rLst[k] = allParticles[k].r
+        
+    matrix = np.subtract.outer(rLst, rLst)
     return(matrix)
 
 ##############################################################################
@@ -1567,7 +1581,7 @@ def CalcParticleBrownianMotion(parameters, data, timeStep):
     for i in range(len(allParticles)):
         D = (parameters.boltz * parameters.temperature) / (6 * math.pi * parameters.fluidViscosity * allParticles[i].r) # diffusionConstant
         t_agg = timeStep            # delta time since last iteration
-        rho_p = parameters.density_ZnO_particle
+        rho_p = parameters.PEDensity
         rho_f = parameters.fluidDensity
         phi_2 = parameters.solidsLoading * (1.0 - parameters.polymerPercent)
         g = parameters.gravitationalConstant
@@ -1767,11 +1781,18 @@ def CalcV_dMatrix(parameters, allParticles, distanceMatrix):
 ###############################################################################
 def CalcVdWMatrixWorker(parameters, partRadProd, partRadSum, partRadDiff, distanceSqMatrix, clearNaNErrors = False):
     A = parameters.A
-    
-    temp1 = np.multiply(2.0, partRadProd)   
+    #np.reshape(partRadProd,(10,10)) #had to reshape because it was outputting a (10,10) and (1000,) matrix    
+    """temp1 = np.multiply(partRadProd, 2.0)
     temp2 = np.square(partRadSum)
     temp3 = np.square(partRadDiff)
+    temp4 = distanceSqMatrix"""
+    
+    temp1 = CalcProductRadiusMatrix(parameters, data.allParticles)
+    temp2 = np.square(CalcSumRadiusMatrix(parameters, data.allParticles))
+    temp3 = np.square(CalcDifferenceRadiusMatrix(parameters, data.allParticles))
+     
     temp4 = distanceSqMatrix
+    
 
     x = np.where(np.subtract(temp4, temp2) == 0)
     y = np.where(np.subtract(temp4, temp3) == 0)
@@ -1791,6 +1812,7 @@ def CalcVdWMatrixWorker(parameters, partRadProd, partRadSum, partRadDiff, distan
         temp7[temp7 <= 0] = .1
         
     temp7 = np.log(temp7)
+    
     
     VdW = np.multiply(A / 6.0, np.add(temp5, np.add(temp6, temp7)))
     VdW = np.negative(VdW)
@@ -1840,7 +1862,7 @@ def CalcVdWMatrix(parameters, allParticles, distanceSqMatrix, clearNaNErrors = F
     partRadDiff = np.subtract.outer(partRads, partRads)
     partRadSum = np.add.outer(partRads, partRads) 
     partRadProd = np.multiply.outer(partRads, partRads)
-        
+            
     VdW = CalcVdWMatrixWorker(parameters, partRadProd, partRadSum, partRadDiff, distanceSqMatrix, clearNaNErrors)
 
     return(VdW)
@@ -1854,10 +1876,9 @@ def CalcTwoParticlesToAgglomerate(parameters, allParticles, interactMatrix):
     oneOverRSummedListMatrix = np.add.outer(oneOverRList, oneOverRList)
     k = parameters.boltz
     T = parameters.temperature
-    mu = parameters.fluidViscosity # changed this to 1 for nnow 
+    mu = parameters.fluidViscosity
     
-    colFreqMatrix = np.multiply((2.0*k*T) / (3.0*1), np.multiply(rSummedListMatrix, oneOverRSummedListMatrix))
-    
+    colFreqMatrix = np.multiply((2.0*k*T) / (3.0*mu), np.multiply(rSummedListMatrix, oneOverRSummedListMatrix))
     
     temp = np.nan_to_num(np.divide(interactMatrix, parameters.boltz * parameters.temperature)) 
     biggest = 50    # close particles can be very repuslive.  This number
@@ -1960,7 +1981,7 @@ def WillNewAgglomerateFit(parameters, data, newCombinedAgg):
     
 ###############################################################################
 def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
-    numberDivisions = 1000
+    numberDivisions = 10
     
     ri = data.allParticles[i].GetRadius()    
     rj = data.allParticles[j].GetRadius()
@@ -1994,13 +2015,14 @@ def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
         EDL = EDLMatrix(parameters, data.allParticles)
         interactMatrix = np.add(interactMatrix, EDL)
         
+        
         if parameters.V_dCalc == True:
             V_d = CalcV_dMatrix(parameters, privateParticleList, distanceMatrix)
             interactMatrix = np.add(interactMatrix, V_d)
 
     else:
         xDistances = [(float(index) / float(numberDivisions) * vectorLength) + SS_adjustment for index in range(1, numberDivisions + 1)]   
-    
+        
         #print("")
         #for index in range(10):
         #    print("Vector= ", CalculateVectorLength((xi + SS_adjustment)- xj[index], (yi + SS_adjustment) - yj[index], (zi + SS_adjustment) - zj[index]))
@@ -2026,12 +2048,14 @@ def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
             yjLst[index] = 0.0
             zjLst[index] = 0.0
             rjLst[index] = rj
-            
+           
+        
         xSqDistMatrix = np.square(np.subtract(xiLst, xjLst))
         ySqDistMatrix = np.square(np.subtract(yiLst, yjLst))
         zSqDistMatrix = np.square(np.subtract(ziLst, zjLst))
     
         distanceSqMatrix = np.add(xSqDistMatrix, np.add(ySqDistMatrix, zSqDistMatrix))
+    
         distanceMatrix   = np.sqrt(distanceSqMatrix)
         
         partRadDiff = np.subtract(ri, rjLst)
@@ -2061,6 +2085,11 @@ def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
         if parameters.V_dCalc == True:
             V_d = CalcV_dMatrixWorker(parameters, privateParticleList, distanceMatrix, sumRadiusMatrix, 1)
             interactMatrix = np.add(interactMatrix, V_d)
+            
+        EDL = EDLMatrix(parameters, data.allParticles)
+        interactMatrix = np.add(interactMatrix, EDL)
+        
+        
         #print("V_d:\n", V_d)
         #print("interactMatrix:\n", interactMatrix)  
     

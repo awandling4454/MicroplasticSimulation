@@ -3,6 +3,9 @@
 Created on Thu May 18 13:22:24 2017variableLengthPolymers
 
 @author: Michelle
+
+Editted 6/21/2021
+by Allison Wandling
 """
 import multiprocessing
 import math
@@ -28,6 +31,7 @@ class FileParameters:
         self.statInterval = 60	# Number of seconds between sim status reports to console
        
         self.particleRad = .0025
+        self.PEDensity = .975
         
         self.monomerRad= 0
         self.monomerDiameter= self.monomerRad * 2
@@ -324,6 +328,16 @@ class FileParameters:
                             self.addUniqueNumber = True
                         elif (value.lower() == "false"):
                             self.addUniqueNumber = False
+                    elif (tag == "V_dCalc".lower()):
+                        if (value.lower() == "true"):
+                            self.V_dCalc = True
+                        elif (value.lower() == "false"):
+                            self.V_dCalc = False
+                    elif (tag == "V_sCalc".lower()):
+                        if (value.lower() == "true"):
+                            self.V_sCalc = True
+                        elif (value.lower() == "false"):
+                            self.V_sCalc = False
                             
                     # program tuning parameters 
                     elif (tag == "polymersPerBin".lower()): 
@@ -338,7 +352,42 @@ class FileParameters:
                     elif (tag == "polymerizationTime".lower()): 
                         self.polymerizationTime = float(value)
                         #print("polymerizationTime=", self.polymerizationTime)
+                    
+                    #EDL Constants
+                    elif (tag == "Eo".lower()):
+                        self.Eo = float(value)
+                    elif (tag == "Ef".lower()):
+                        self.Ef = float(value)
+                    elif (tag == "surfacePotential".lower()):
+                        self.surfacePotential = float(value)
+                    elif (tag == "boltz".lower()):
+                        self.boltz = float(value)
+                    elif (tag == "temp".lower()):
+                        self.temp = int(value)
+                    elif (tag == "Fe_ions".lower()):
+                        self.Fe_ions = int(value)
+                    elif (tag == "Fe_charge".lower()):
+                        self.Fe_charge = int(value)
+                    elif (tag == "Cl_ions".lower()):
+                        self.Cl_ions = int(value)
+                    elif (tag == "Cl_charge".lower()):
+                        self.Cl_charge = int(value)
+                    elif (tag == "electronCharge".lower()):
+                        self.electronCharage = float(value)
+                    elif (tag == "Fe_and_Cl_sum".lower()):
+                        self.Fe_and_Cl_sum = str(value)
+                    elif (tag == "Concentration".lower()):
+                        self.Concentration= float(value)
+                    elif (tag == "Concentration_Converted".lower()):
+                        self.Concentration_Converted = str(value)
+                    elif (tag == "debyeLength".lower()):
+                        self.debyeLength = str(value)
+                    elif (tag == "kappa".lower()):
+                        self.kappa = str(value)
+                    elif (tag == "EDLConstants".lower()):
+                        self.EDLConstants = str(value)
                         
+                    
                     else:
                         print("<<<< Unknown command line: %s >>>>>" % (line))
                         self.valid = True #change later
