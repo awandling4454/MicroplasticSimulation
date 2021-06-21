@@ -49,13 +49,13 @@ def CalculatePolymerLength(parameters):
     
 ###############################################################################
 def SetLatticeConstant(latticeConstant, x, y, z):
-    try:
+    """try:
         x = latticeConstant * (int(x / latticeConstant) + .5)
         y = latticeConstant * (int(y / latticeConstant) + .5)
         z = latticeConstant * (int(z / latticeConstant) + .5)
     except:
         print("SetlatticeConstant: x=%f, y=%f, z=%f" % (x, y, z))
-        raise
+        raise""" #lattice Constant = 0
     return(x, y, z)
     
 #############################################################################

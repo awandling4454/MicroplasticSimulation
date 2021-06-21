@@ -19,9 +19,7 @@ class FileParameters:
     
     # set defaults
     def __init__(self):
-        self.allParticles = []
-        self.allParticlesRadius = []
-        self.boxSize = 1.45e-06
+        self.boxSize = 5
         self.oldPolymerBoxSize = self.boxSize
         self.particleCount = 10
         # self.hamaker =	9.2e-20	# Hamaker constant
@@ -29,7 +27,7 @@ class FileParameters:
         self.temperature = 300         # temperature in K
         self.statInterval = 60	# Number of seconds between sim status reports to console
        
-        self.particleRad = .025
+        self.particleRad = .0025
         
         self.monomerRad= 0
         self.monomerDiameter= self.monomerRad * 2
@@ -40,20 +38,18 @@ class FileParameters:
         self.monomerMolecularWeight = 0
         self.initialSolidsLoading = .0232
         
-        self.latticeConstant = .001e-9
+        self.latticeConstant = 0
         
         self.fileNameBase = "default"
         self.addUniqueNumber = False
         self.simtTime = 9
         
-        #self.massOf1_ZnO_particle = 7.06858352e-20
-        #self.density_ZnO_particle = 5.61
         
         # Misc. parameters
         self.simTime = 10.0
         self.doMathIn = "Float64"
         self.minimumNumberOfCrossings = 3       # Number of crossing before two polymers are consider tangled.
-        self.polymersPerBin = 0               # Number of polymers in a processing bin
+        self.polymersPerBin = 500               # Number of polymers in a processing bin
         self.writeDumpPolymers = False
         self.writeDumpTangles = False
         self.generatePolymers = False
@@ -61,7 +57,7 @@ class FileParameters:
         self.dryingDelay = 0
         self.polymerPercent = 0
         self.packingFactor = .64                # for random spheres packing density
-        self.fluidDensity = .1                  # diffusion constont.  .1 is totally blind guess of a good value
+        self.fluidDensity = 1         #density of water         # diffusion constont.  .1 is totally blind guess of a good value
         self.availableCpus = 0
         self.gravitationalConstant = 9.8        # gravitational Constant
         self.planksConstant = 6.62607004e-34
@@ -101,14 +97,15 @@ class FileParameters:
         self.timeInNudgeParticles = 0
         
         # program Tuning parameters
-        self.polymersPerBin = 0               # Number of polymers in a processing bin
+        self.polymersPerBin = 500               # Number of polymers in a processing bin
         self.generateBasePolymerCount = 0
-        self.processOneBlockMaxSize =  0
-        self.polymerizationTime =  0
+        self.processOneBlockMaxSize =  10000
+        self.polymerizationTime =  0 # 5 hours
  
         # Debug       
         self.graphForcesTest = False       
         self.saveInitialAtoms = False
+        
         self.V_dCalc = False
         self.V_sCalc = False
 
@@ -344,12 +341,15 @@ class FileParameters:
                         
                     else:
                         print("<<<< Unknown command line: %s >>>>>" % (line))
-                        self.valid = False
+                        self.valid = True #change later
                     
         self.oldPolymerBoxSize = self.boxSize
         self.latticeConstantDiv2 = self.latticeConstant / 2.0
         self.monomerBondLength = (self.monomerRad * 2.0) - self.monomerBeadDiameter
         self.polymerMolecularWeight = self.polymerLength * self.monomerMolecularWeight
+        
+        #self.massOf1_ZnO_particle = 7.06858352e-20
+        #self.density_ZnO_particle = 5.61
         
         self.particleRadScale = 0.5
         
@@ -361,11 +361,11 @@ class FileParameters:
         T = self.temperature
         k = self.boltz
         hBar = self.planksConstant
-        epslon_1 = self.Ep
+        epslon_1 = 2.25
         epslon_3 = self.Ef
         omega = self.rotationalFrequency
-        n_1 = self.particleRefractiveIndex
-        n_3 = self.fluidRefractiveIndex
+        n_1 = 1.51
+        n_3 = 1.33
         self.A = ((3.0*k*T/4.0) * (((epslon_1 - epslon_3)/(epslon_1 + epslon_3))**2)) + \
                         (((3.0*hBar*omega)/(32.0*math.pi*math.sqrt(2.0))) * ((n_1**2 - n_3**2)**2) / ((n_1**2 + n_3**2)**(3.0/2.0)))        
           

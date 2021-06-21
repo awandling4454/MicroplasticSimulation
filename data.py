@@ -13,8 +13,6 @@ class Data:
 ###############################################################################    
     def __init__(self):
         self.holdAreClose = []
-        self.allParticles = []
-        self.allParticlesRadius = []
         self.lastPolymerBrownianMotionTime = 0.0
         self.largestParticleToAggregate = 1.0   # = 1 meter i.e. aggregate all particles
         self.lengthOfSubparticleList = 0

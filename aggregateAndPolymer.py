@@ -26,6 +26,7 @@ import copy
 from polymer import Polymer
 from aggregate import Aggregate     
 from readFile import FileParameters  
+
 from holdAggregates import HoldAggregates  
 from polymerBins import PolymerBins
 from myLogger import MyLogger
@@ -48,14 +49,6 @@ from utilities import Sec2HMS
 from utilities import FormatNumber
 from myCsv     import MyCsv
 from data import Data 
-
-from runParameters import kappa
-from runParameters import EDLConstants
-from runParameters import allParticles
-from runParameters import allParticlesRadius
-from runParameters import latticeConstant
-
-from readFile import FileParameters
 #############################################################################
 def CalcAggregateRadius(parameters, newC):
     volumeAllParticles = newC * (4.0/3.0) * math.pi * (parameters.particleRad ** 3)
@@ -161,41 +154,41 @@ def CalcDistance(i, j):
     return(distance)
               
 ###############################################################################
-def CalcSumRadiusMatrix(parameters, allParticlesRadius):
-    #rLst = np.full(len(allParticles),0) # dtype=parameters.doMathIn)
-    #for k in range(len(allParticles)):
-     #   rLst[k] = allParticles[k].r
-    rLst = np.asarray(allParticlesRadius, dtype=np.longdouble) #turns allParticles lsit into an array
-    sumRadiusMatrix = np.add.outer(rLst, rLst) #creates a matrix of each radius added to another radius
-    return(sumRadiusMatrix)
+def CalcSumRadiusMatrix(parameters, allParticles):
+    rLst = np.full(len(allParticles), 0, dtype=parameters.doMathIn)
+    
+    for k in range(len(allParticles)):
+        rLst[k] = allParticles[k].r
+        
+    matrix = np.add.outer(rLst, rLst)
+    return(matrix)
 
 ##############################################################################
-def CalcProductRadiusMatrix(parameters, allParticlesRadius):
+def CalcProductRadiusMatrix(parameters, allParticles):
     #multiplies the two radii together
-    #rLst = np.empty(len(allParticles), dtype = float, order = 'C') # dtype=parameters.doMathIn)
-    #for k in range(len(allParticles)):
-     # rLst.append(k,allParticles[k])
-    rLst = np.asarray(allParticlesRadius, dtype=np.float64)
-    productRadiusMatrix = np.multiply.outer(rLst, rLst)
-    return(productRadiusMatrix)
+    rLst = np.full(len(allParticles), 0, dtype = parameters.doMathIn)
+        
+    for k in range(len(allParticles)):
+        rLst[k] = allParticles[k].r
+            
+    matrix = np.multiply.outer(rLst, rLst)
+    return(matrix)
 
 ##############################################################################
-def CalcRadDivisionMatrix(parameters, allParticlesRadius):
+def CalcRadDivisionMatrix(parameters, allParticles):
         #(ri*rj)/(ri+rj)
-    sumRadiusMatrix = CalcSumRadiusMatrix(parameters, allParticlesRadius)
-    productRadiusMatrix = CalcProductRadiusMatrix(parameters, allParticlesRadius)
+    sumRadiusMatrix = CalcSumRadiusMatrix(parameters, allParticles)
+    productRadiusMatrix = CalcProductRadiusMatrix(parameters, allParticles)
         
     radDivisionMatrix = np.divide(productRadiusMatrix,sumRadiusMatrix)
-    return(radDivisionMatrix)  
+    return(radDivisionMatrix)
     
 ###############################################################################
-def CalcSSDistanceMatrix(parameters, totalParticles,totalParticlesRadius):  
-    #calculates the distance from the surface to surface of each particle
-    #if number is negative that means that the particles are overlapping
-    partRadSum = CalcSumRadiusMatrix(parameters, totalParticlesRadius)
-    distanceMatrix=  CalcDistanceMatrix(parameters, totalParticles)
-    SSDistanceMatrix = np.subtract(distanceMatrix, partRadSum)
-    return(SSDistanceMatrix)
+def CalcSSDistanceMatrix(parameters, allParticles):   
+    partRadSum = CalcSumRadiusMatrix(parameters, allParticles)    
+    distanceMatrix=  CalcDistanceMatrix(parameters, allParticles)    
+    gapMatrix = np.subtract(distanceMatrix, partRadSum)
+    return(gapMatrix)
     
 ###############################################################################
 def CalcDistanceMatrix(parameters, allParticles):   
@@ -216,10 +209,11 @@ def CalcDistanceMatrix(parameters, allParticles):
     return(distanceMatrix)
 
 ###############################################################################
-def CalcNaturalLogMatrix(parameters, allParticles, allParticlesRadius):
+def CalcNaturalLogMatrix(parameters, allParticles):
     #ln(1+exp(-kH))
-    SSDistanceMatrix = CalcSSDistanceMatrix(parameters, allParticles, allParticlesRadius)
-    kappaSSDistanceMatrix = np.multiply(-kappa,SSDistanceMatrix)
+    SSDistanceMatrix = CalcSSDistanceMatrix(parameters, allParticles)
+    negativekappa = -1*parameters.kappa
+    kappaSSDistanceMatrix = np.multiply(negativekappa,SSDistanceMatrix)
     #creates numbers that are large to be exponentiated so change the units
     kappaSSDistanceMatrix_Mega = np.divide(kappaSSDistanceMatrix,1e6)
     #changes units to Megamenters
@@ -230,20 +224,19 @@ def CalcNaturalLogMatrix(parameters, allParticles, allParticlesRadius):
     return(NaturalLogMatrix)
 
 ##############################################################################
-def EDLMatrix (parameters, allParticles, allParticlesRadius):
+def EDLMatrix (parameters, allParticles):
     #completing the full EDL equation 
     #only need to worry about kr>5 because the concentration would have to be
     #unlikely small for kr<5
-    NaturalLogMatrix = CalcNaturalLogMatrix(parameters, allParticles, allParticlesRadius)
-    radDivisionMatrix = CalcRadDivisionMatrix(parameters, allParticlesRadius)
+    NaturalLogMatrix = CalcNaturalLogMatrix(parameters, allParticles)
+    radDivisionMatrix = CalcRadDivisionMatrix(parameters, allParticles)
     radDiviisionMatrix = np.multiply(radDivisionMatrix,1e-6) #because whole equation is multiplied by 1e-6
     NaturalLogAndRad =  np.multiply(NaturalLogMatrix,radDivisionMatrix) 
-    EDLMatrix= np.multiply(EDLConstants,NaturalLogAndRad)
+    EDLMatrix= np.multiply(parameters.EDLConstants,NaturalLogAndRad)
     EDLMatrix = np.multiply(EDLMatrix,1e6) #makes all the equation normal again
     #gives an answer in V #the more positive the number then the less likely to agglomerate
     
     return(EDLMatrix)
-
     
 ###############################################################################
 def CalcOverlapParticles(parameters, allParticles, minimumOverlapGap, includeUpperTriangle = True):    
@@ -540,31 +533,30 @@ def NudgeParticles(parameters, data, nudgeDistance, minimumOverlapGap, printNudg
     
     return(nudges, failed)
 #############################################################################
-def CreateParticles(Parameters, Data):
+def CreateParticles(parameters, data):
+    if parameters.graphForcesTest:
+        agg = Aggregate(parameters.particleRad)
+        agg.SetLocation(parameters, 0, 0, 0)
+        data.allParticles.append(agg)
+        x = (parameters.particleRad + parameters.stericLayerThickness) * 2 + parameters.spacing
     
-    for index in range(Parameters.particleCount):
-        agg = Aggregate(Parameters.particleRad)
+    for index in range(parameters.particleCount):
+        agg = Aggregate(parameters.particleRad)
         
-        if Parameters.graphForcesTest == False:
-           loc = agg.SetRandomLocation(Parameters)
-           Data.allParticles.append(loc) #puts particle locations into a list
-           Data.allParticlesRadius.append(Parameters.particleRad)
-        # else:
-        #    agg.CheckLocation(Parameters, x, 0, 0)
-            #x += Parameters.spacing   
-        
-    
-    if Parameters.graphForcesTest == True:
-        agg = Aggregate(FileParameters.particleRad)
-        loc= agg.CheckLocation(latticeConstant, 0, 0, 0)
-        Data.allParticles.append(agg)
-        x = (Parameters.particleRad + Parameters.stericLayerThickness) * 2 + Parameters.spacing
-   
-    else:
-        RecalculateBoxSize(Parameters, Data, allParticles, False)
-    
+        if parameters.graphForcesTest == False:
+            agg.SetRandomLocation(parameters)
+        else:
+            agg.SetLocation(parameters, x, 0, 0)
+            x += parameters.spacing
+            
+        data.allParticles.append(agg)
+       
+    if parameters.graphForcesTest == False:
+        RecalculateBoxSize(parameters, data, False)
     #[nudges, failed] = NudgeParticles(parameters, data, parameters.particleRad * .5, parameters.particleRad * .25)
-    return([Data.allParticles,Data.allParticlesRadius])
+        
+    data.log.Log("")
+    data.log.Log("Initialized particles.")
     
 #############################################################################
 def CreateBasePolymers(parameters, data, onlyBase): 
@@ -1862,9 +1854,10 @@ def CalcTwoParticlesToAgglomerate(parameters, allParticles, interactMatrix):
     oneOverRSummedListMatrix = np.add.outer(oneOverRList, oneOverRList)
     k = parameters.boltz
     T = parameters.temperature
-    mu = parameters.fluidViscosity
+    mu = parameters.fluidViscosity # changed this to 1 for nnow 
     
-    colFreqMatrix = np.multiply((2.0*k*T) / (3.0*mu), np.multiply(rSummedListMatrix, oneOverRSummedListMatrix))
+    colFreqMatrix = np.multiply((2.0*k*T) / (3.0*1), np.multiply(rSummedListMatrix, oneOverRSummedListMatrix))
+    
     
     temp = np.nan_to_num(np.divide(interactMatrix, parameters.boltz * parameters.temperature)) 
     biggest = 50    # close particles can be very repuslive.  This number
@@ -1998,8 +1991,12 @@ def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
         VdW = CalcVdWMatrix(parameters, privateParticleList, distanceSqMatrix, True)
         interactMatrix = VdW
         
-        V_d = CalcV_dMatrix(parameters, privateParticleList, distanceMatrix)
-        interactMatrix = np.add(interactMatrix, V_d)
+        EDL = EDLMatrix(parameters, data.allParticles)
+        interactMatrix = np.add(interactMatrix, EDL)
+        
+        if parameters.V_dCalc == True:
+            V_d = CalcV_dMatrix(parameters, privateParticleList, distanceMatrix)
+            interactMatrix = np.add(interactMatrix, V_d)
 
     else:
         xDistances = [(float(index) / float(numberDivisions) * vectorLength) + SS_adjustment for index in range(1, numberDivisions + 1)]   
@@ -2061,8 +2058,9 @@ def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
         sumRadiusMatrix = np.array([ri + rj] * numberDivisions)
         #V_d = CalcV_dMatrixWorker(parameters, privateParticleList, np.sqrt(distanceSqMatrix), sumRadiusMatrix, 1)
         #print("V_d:\n", V_d)
-        V_d = CalcV_dMatrixWorker(parameters, privateParticleList, distanceMatrix, sumRadiusMatrix, 1)
-        interactMatrix = np.add(interactMatrix, V_d)
+        if parameters.V_dCalc == True:
+            V_d = CalcV_dMatrixWorker(parameters, privateParticleList, distanceMatrix, sumRadiusMatrix, 1)
+            interactMatrix = np.add(interactMatrix, V_d)
         #print("V_d:\n", V_d)
         #print("interactMatrix:\n", interactMatrix)  
     
@@ -2610,31 +2608,30 @@ def RunSimulation(parameters, data):
             VdW = CalcVdWMatrix(parameters, subParticleList, distanceSqMatrix, False)
             interactMatrix = VdW
             
-            # Add V_s #do not need steric layer
-            if parameters.graphForcesTest == False:                           
-                
-                if parameters.V_sCalc == True:
+            # Add V_s 
+            if parameters.graphForcesTest == False:   
+                if parameters.V_sCalc == True:                        
                     V_s = CalcV_sMatrix(parameters, subParticleList)
                     interactMatrix = np.add(interactMatrix, V_s)
-                
-                EDL = EDLMatrix(parameters, allParticles, allParticlesRadius)
-                interactMatrix = np.add(interactMatrix, EDL)
-                
+            
             # #polymer Interact 
             # V_d is build from three equations to each describing what happens if particles are close to far.
             # need to build final matrix using the 3 distance matrices (V_da, V_db, and V_dc)
             #
             # Equation for code came from the paper "Depletion Stabilization in 
             # Nanoparticles-Polymer Suspensions: Multi-Length-Scale Analysis of Microstructure"
+            if parameters.V_dCalc == True:
+                V_d = CalcV_dMatrix(parameters, subParticleList, distanceMatrix)
+                interactMatrix = np.add(interactMatrix, V_d)
+                
+            EDL = EDLMatrix(parameters, allParticles)
+            interactMatrix = np.add(interactMatrix, EDL)
             
-                if parameters.V_dCalc == True:
-                    V_d = CalcV_dMatrix(parameters, subParticleList, distanceMatrix)
-                    interactMatrix = np.add(interactMatrix, V_d)
+            
             #DumpMatrixToCSV(parameters, VdW,  "matrix_VdW.csv", data.allParticles)
             #DumpMatrixToCSV(parameters, V_s,  "matrix_V_s.csv", data.allParticles)
             #DumpMatrixToCSV(parameters, V_d,  "matrix_V_d.csv", data.allParticles)
             #DumpMatrixToCSV(parameters, interactMatrix,  "matrix_interact.csv", data.allParticles)
-            
             
             if parameters.graphForcesTest:            
                 DumpMatrixToCSV(parameters, VdW,  "matrix_VdW.csv", data.allParticles)
@@ -2802,7 +2799,7 @@ for arg in args:
         data.log.Log("Initializing multi-core processing")
         ppservers = ()
 
-        #data.job_server = pp.Server("autodetect", ppservers=ppservers)
+        data.job_server = pp.Server("autodetect", ppservers=ppservers)
         #data.log.Log("Number of CPU detected is %d." % (data.job_server.get_ncpus()))
         data.job_server.set_ncpus(parameters.availableCpus)
         #data.log.Log("Number of CPU used is %d." % (data.job_server.get_ncpus()))
