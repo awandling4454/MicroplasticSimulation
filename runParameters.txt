@@ -5,13 +5,13 @@
 # In general I try to group variablesi that are related
 
 # This group are the variables are frequently changed
-drying = False			# if False then no drying.  if >= 0 then the number of sim seconds
+drying = False			# if False then no drying.  if >= 0 then the 9er of sim seconds
 				# before drying starts
 generatePolymers= False		# Generate polymers in simulation
 initialSolidsLoading=.02
-simTime=	0		# number of simulation seconds to execute. 0 = only initialize
-#originially 36000 seconds
-particleCount = 10		# Number of particles to run in simulation
+simTime=	360		# number of simulation seconds to execute. 0 = only initialize
+#originially 36000 
+particleCount = 100		# Number of particles to run in simulation
 polymerPercent = 0   	# Percent of solid loading that is polymer
 stericLayerThickness = 0	# Steric Layer Thickness
 temperature = 	368     	# temperature in K
@@ -49,7 +49,7 @@ doMathIn = Float64		# Float64 more precise.  FLoat32 Faster
 statInterval = 	120		# Number of seconds between sim status reports to console
 writeDumpPolymers = False	# Should polymers be written to dump file.
 #writeOnSL=.300, .500, .900	# list of dumps based on SL.
-writeParticlesEvery = 0		# 0 means off
+writeParticlesEvery = 36 	# 0 means off
 				# > 0 means to write particles to disk every x 
 				# seconds of simulation
 writeOnSL=			# list of dumps based on SL.
@@ -91,9 +91,9 @@ Fe_charge = 3
 Cl_ions = 3
 Cl_charge = 1
 electronCharge = 1.6e-19
-Fe_and_Cl_sum = ((1*(3**2)*electronCharge**2)+(3*(1**2)*electronCharge**2))
+Fe_and_Cl_sum = 3.072e-37
 Concentration = .5 #mmol/L
-Concentration_Converted = .5*1000*(6.02e23)/1000 #changing mmol to mol and L to m^3
-debyeLength = ((Ef*Eo*boltz*temp)/(Fe_and_Cl_sum*Concentration_Converted))**(1/2)
-kappa = 1/debyeLength
-EDLConstants = (4*math.pi*Ef*Eo*(surfacePotential)**2)*1e-6
+Concentration_Converted = 3.01e23 #changing mmol to mol and L to m^3
+debyeLength = 5.635e-9
+kappa = 1.775e8
+EDLConstants = 5.591e-18

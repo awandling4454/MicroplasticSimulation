@@ -3,6 +3,8 @@
 Created on Thu May 18 13:22:24 2017
 
 @author: Michelle
+Editted 6/21/2021
+Allison Wandling
 """
 from utilities import SetLatticeConstant
 import numpy as np

@@ -3,6 +3,9 @@
 Created on Thu May 18 13:22:24 2017
 
 @author: Michelle
+
+Editted on 6/21/2021
+by Allison Wandling
 """
 
 from location import Location 

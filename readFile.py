@@ -124,12 +124,17 @@ class FileParameters:
         self.Cl_ions = 3
         self.Cl_charge = 1
         self.electronCharge = 1.6e-19
-        self.Fe_and_Cl_sum = ((1*(3**2)*self.electronCharge**2)+(3*(1**2)*self.electronCharge**2))
+        self.Fe_and_Cl_sum = 3.072e-37
+        #((1*(3**2)*self.electronCharge**2)+(3*(1**2)*self.electronCharge**2))
         self.Concentration = .5 #mmol/L
-        self.Concentration_Converted = .5*1000*(6.02e23)/1000 #changing mmol to mol and L to m^3
-        self.debyeLength = ((self.Ef*self.Eo*self.boltz*self.temp)/(self.Fe_and_Cl_sum*self.Concentration_Converted))**(1/2)
-        self.kappa = 1/self.debyeLength
-        self.EDLConstants = (4*math.pi*self.Ef*self.Eo*(self.surfacePotential)**2)*1e-6
+        self.Concentration_Converted = 3.01e23
+        #.5*1000*(6.02e23)/1000 #changing mmol to mol and L to m^3
+        self.debyeLength = 5.635e-9
+        #((self.Ef*self.Eo*self.boltz*self.temp)/(self.Fe_and_Cl_sum*self.Concentration_Converted))**(1/2)
+        self.kappa = 1.775e8
+        #1/self.debyeLength
+        self.EDLConstants = 5.591e-18
+        #(4*math.pi*self.Ef*self.Eo*(self.surfacePotential)**2)*1e-6
         
 ###############################################################################
     def ReadParametersFromFile(self, fileName=["runParameters.txt"]):          
@@ -375,17 +380,17 @@ class FileParameters:
                     elif (tag == "electronCharge".lower()):
                         self.electronCharage = float(value)
                     elif (tag == "Fe_and_Cl_sum".lower()):
-                        self.Fe_and_Cl_sum = str(value)
+                        self.Fe_and_Cl_sum = float(value)
                     elif (tag == "Concentration".lower()):
                         self.Concentration= float(value)
                     elif (tag == "Concentration_Converted".lower()):
-                        self.Concentration_Converted = str(value)
+                        self.Concentration_Converted = float(value)
                     elif (tag == "debyeLength".lower()):
-                        self.debyeLength = str(value)
+                        self.debyeLength = float(value)
                     elif (tag == "kappa".lower()):
-                        self.kappa = str(value)
+                        self.kappa = float(value)
                     elif (tag == "EDLConstants".lower()):
-                        self.EDLConstants = str(value)
+                        self.EDLConstants = float(value)
                         
                     
                     else:

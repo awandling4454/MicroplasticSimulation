@@ -3,6 +3,9 @@
 Created on Thu May 18 13:22:24 2017
 
 @author: Michelle
+
+Editted 6/21/2021
+Allison Wandling
 """
 import random
 import math
@@ -252,8 +255,9 @@ def _CalculateFluidViscosity(parameters):
         x = 0.0
         
     parameters.viscosityScaler = 0
-    parameters.fluidViscosity = ((167.55 * (x*x)) + (0.0 * x) + 0.00098) * parameters.viscosityScaler
-        
+    #parameters.fluidViscosity = ((167.55 * (x*x)) + (0.0 * x) + 0.00098) * parameters.viscosityScaler
+    parameters.fluidViscosity = .00890 #fluid viscosity of water
+      
     return
     
 ###############################################################################

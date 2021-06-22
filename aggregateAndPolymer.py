@@ -1880,12 +1880,16 @@ def CalcTwoParticlesToAgglomerate(parameters, allParticles, interactMatrix):
     
     colFreqMatrix = np.multiply((2.0*k*T) / (3.0*mu), np.multiply(rSummedListMatrix, oneOverRSummedListMatrix))
     
-    temp = np.nan_to_num(np.divide(interactMatrix, parameters.boltz * parameters.temperature)) 
+    temp = np.nan_to_num(np.divide(interactMatrix, parameters.boltz * parameters.temperature))
+    temp = temp*1e-9
     biggest = 50    # close particles can be very repuslive.  This number
                     # represents a large number without crashing the program
     temp[temp > biggest] = biggest
     stabRatMatrix = np.exp(temp)
-            
+    stabRatMatrix = np.multiply(stabRatMatrix,1e9)
+    print(stabRatMatrix)
+    
+        
     aggFreqMatrix = np.divide(colFreqMatrix, stabRatMatrix)
     np.fill_diagonal(aggFreqMatrix, 0.0)      # make sure i != j below threshold
     sumFreqRows = np.sum(aggFreqMatrix, 1)
@@ -1981,7 +1985,7 @@ def WillNewAgglomerateFit(parameters, data, newCombinedAgg):
     
 ###############################################################################
 def WillTwoParticlesNotReject(parameters, data, i, j, currentPotential):
-    numberDivisions = 10
+    numberDivisions = parameters.particleCount
     
     ri = data.allParticles[i].GetRadius()    
     rj = data.allParticles[j].GetRadius()
@@ -2847,7 +2851,7 @@ for arg in args:
             RecalculateBoxSize(parameters, data)
             RunSimulation(parameters, data)
             fileName = parameters.fileNameBase + "_roughness.csv"
-            CalculateRoughness(parameters, data, fileName, range(95, 0, -5))
+            #CalculateRoughness(parameters, data, fileName, range(95, 0, -5))
             
             if (parameters.drying):
                 
