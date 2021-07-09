@@ -1,0 +1,81 @@
+2021-07-09 13:03:13: Program Started
+Python version:
+ 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)]
+Program version: 2.09
+The random number generator seed is 7901201908300191200
+parameters file is runParameters.txt.
+
+runParameters.txt file parameters:
+  Constants:
+    A= 2.75814e-21
+    boltz= 1.38e-23
+    fluidElictricalPermitivity= 7.60000e+01
+    fluidRefractiveIndex= 1.33000e+00
+    gravitationalConstant= 9.80000e+00
+    particleElictricalPermitivity= 2.30000e+00
+    planksConstant= 6.62607e-34
+    particleRefractiveIndex= 1.52500e+00
+    rotationalFrequency= 8.95000e-01
+
+  Simulation parameters:
+    addUniqueNumber= True
+    availableCpus= 1
+    downEscapedAggregates= 0
+    drying= False
+    dryingDelay= 0
+    fluidDensity=  1.00
+    generatePolymers= False
+    initialSolidsLoading= 0.0200
+    latticeConstant= 0.00e+00
+    minimumNumberOfCrossings= 3
+    particleCount= 2000
+    polymerizationTime=  0.0
+    polymerPercent= 0.00
+    simTime= 36000.0
+    temperature= 300C
+    variableLengthPolymers= False
+    writeDumpPolymers= False
+    writeDumpTangles= False
+
+  Particle parameters
+    particleRad= 5.00e-08
+    particleVolFrac= 0.02000
+    stericLayerThickness= 0.000e+00
+
+  Polymer parameters
+    monomerDiameter= 0.00e+00
+    monomerMolecularWeight= 0.000000
+    monomerRad= 0.00e+00
+    particleVolFrac= 0.00000
+    polymerLength=     0
+    polymerStiffness= 0.00
+
+  Program tuning Parameters
+    doMathIn= Float64
+    fileNameBase= Results/50nm_0004/50nm
+    generateBasePolymerCount= 0
+    polymersPerBin= 0
+    processOneBlockMaxSize= 10000
+    statInterval=  120
+
+  Debug Parameters
+    graphForcesTest= False
+    saveInitialAtoms= False
+    writeOnSL= []
+    writeParticlesEvery= 0.0
+
+Using 1 of 6 CPUs.
+2000 particles to generate. VolFrac = 0.020000
+0 polymers to generate. VolFrac = 0.000000
+
+Initialized particles.
+Creating Polymers.
+Finished creating Polymers.
+
+Running Simulation
+ 0:00:00(+ 0:00:00), it=   +0: clk= .0000, SL= .0200, Pa= 2.000K, Po=      0, AAR=5.00e-08, BS= 3.74e-06
+ 0:00:48(+ 0:00:48), it=   +2: clk= 42262, SL= .0200, Pa= 2.002K, Po=      0, AAR=5.00e-08, BS= 3.74e-06
+Simulation finished in  0:00:48 H:M:S,
+
+Program executed in  0:01:00 H:M:S.
+2021-07-09 13:04:14: Program Terminated

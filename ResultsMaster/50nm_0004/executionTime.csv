@@ -1,0 +1,4 @@
+Clock, Solids Loading, Box Size, AAR, RT Clock, Not accounted for, CheckForPolymerTangles, Stage One, Stage Two, RunSimulation, CalcParticleBrownianMotion, CalcPolymerBrownianMotion, NudgeParticles
+0.000000, 0.020000, 3.741102e-06, 5.000000e-08,    12.1,     1.6,     0.0,     0.0,     0.0,     0.0,     0.0,     0.0,    10.4
+21126.320032, 0.020000, 3.741725e-06, 5.001155e-08,    32.6,     0.4,     0.0,     0.0,     0.0,    13.6,     0.1,     0.0,    18.5
+42262.426482, 0.020000, 3.742349e-06, 5.002310e-08,    60.2,    -0.6,     0.0,     0.0,     0.0,    28.8,     0.1,     0.0,    31.9
