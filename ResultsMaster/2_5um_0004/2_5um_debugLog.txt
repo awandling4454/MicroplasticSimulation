@@ -1,0 +1,12 @@
+
+Final timer Stastics:
+
+Timeing stats with simulation at clock = 2640790005 seconds
+  Spent  0:00:00 H:M:S in RecalculateBoxSize
+  Spent  0:00:00 H:M:S in CheckForPolymerTangles
+    Spent  0:00:00 H:M:S in CalcPolymerBrownianMotion
+  Spent  0:00:00 H:M:S in CalcParticleBrownianMotion
+  Spent  0:00:13 H:M:S in RunSimulation
+    Spent  0:00:25 H:M:S on other Parts
+  Final total particles = 2001. VolFrac = 0.020000
+  Final polymers = 0. VolFrac = 0.000000
