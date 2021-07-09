@@ -1,0 +1,99 @@
+2021-07-09 13:02:23: Program Started
+Python version:
+ 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)]
+Program version: 2.09
+The random number generator seed is 1343508151074371498
+parameters file is runParameters.txt.
+
+runParameters.txt file parameters:
+  Constants:
+    A= 2.75814e-21
+    boltz= 1.38e-23
+    fluidElictricalPermitivity= 7.60000e+01
+    fluidRefractiveIndex= 1.33000e+00
+    gravitationalConstant= 9.80000e+00
+    particleElictricalPermitivity= 2.30000e+00
+    planksConstant= 6.62607e-34
+    particleRefractiveIndex= 1.52500e+00
+    rotationalFrequency= 8.95000e-01
+
+  Simulation parameters:
+    addUniqueNumber= True
+    availableCpus= 1
+    downEscapedAggregates= 0
+    drying= False
+    dryingDelay= 0
+    fluidDensity=  1.00
+    generatePolymers= False
+    initialSolidsLoading= 0.0200
+    latticeConstant= 0.00e+00
+    minimumNumberOfCrossings= 3
+    particleCount= 2000
+    polymerizationTime=  0.0
+    polymerPercent= 0.00
+    simTime= 36000.0
+    temperature= 300C
+    variableLengthPolymers= False
+    writeDumpPolymers= False
+    writeDumpTangles= False
+
+  Particle parameters
+    particleRad= 1.00e-08
+    particleVolFrac= 0.02000
+    stericLayerThickness= 0.000e+00
+
+  Polymer parameters
+    monomerDiameter= 0.00e+00
+    monomerMolecularWeight= 0.000000
+    monomerRad= 0.00e+00
+    particleVolFrac= 0.00000
+    polymerLength=     0
+    polymerStiffness= 0.00
+
+  Program tuning Parameters
+    doMathIn= Float64
+    fileNameBase= Results/10nm_0001/10nm
+    generateBasePolymerCount= 0
+    polymersPerBin= 0
+    processOneBlockMaxSize= 10000
+    statInterval=  120
+
+  Debug Parameters
+    graphForcesTest= False
+    saveInitialAtoms= False
+    writeOnSL= []
+    writeParticlesEvery= 0.0
+
+Using 1 of 6 CPUs.
+2000 particles to generate. VolFrac = 0.020000
+0 polymers to generate. VolFrac = 0.000000
+
+Initialized particles.
+Creating Polymers.
+Finished creating Polymers.
+
+Running Simulation
+ 0:00:00(+ 0:00:00), it=   +0: clk= .0000, SL= .0200, Pa= 2.000K, Po=      0, AAR=1.00e-08, BS= 7.48e-07
+ 0:02:20(+ 0:02:20), it=   +7: clk=  1184, SL= .0200, Pa= 2.006K, Po=      0, AAR=1.00e-08, BS= 7.49e-07
+ 0:04:21(+ 0:02:01), it=   +6: clk=  2201, SL= .0200, Pa= 2.008K, Po=      0, AAR=1.00e-08, BS= 7.49e-07
+ 0:06:30(+ 0:02:09), it=   +8: clk=  3559, SL= .0200, Pa= 2.012K, Po=      0, AAR=1.00e-08, BS= 7.50e-07
+ 0:08:39(+ 0:02:09), it=   +8: clk=  4919, SL= .0200, Pa= 2.015K, Po=      0, AAR=1.00e-08, BS= 7.50e-07
+ 0:10:41(+ 0:02:02), it=   +8: clk=  6282, SL= .0200, Pa= 2.020K, Po=      0, AAR=1.00e-08, BS= 7.51e-07
+ 0:12:50(+ 0:02:09), it=  +11: clk=  8159, SL= .0200, Pa= 2.025K, Po=      0, AAR=1.01e-08, BS= 7.51e-07
+ 0:14:52(+ 0:02:02), it=  +11: clk= 10042, SL= .0200, Pa= 2.032K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:16:58(+ 0:02:06), it=  +13: clk= 12272, SL= .0200, Pa= 2.033K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:19:06(+ 0:02:08), it=  +13: clk= 14503, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:21:07(+ 0:02:01), it=  +12: clk= 16562, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:23:16(+ 0:02:09), it=  +13: clk= 18792, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:25:17(+ 0:02:01), it=  +12: clk= 20851, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:27:25(+ 0:02:08), it=  +13: clk= 23082, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:29:34(+ 0:02:09), it=  +13: clk= 25313, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:31:42(+ 0:02:08), it=  +13: clk= 27543, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:33:53(+ 0:02:11), it=  +13: clk= 29774, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:35:59(+ 0:02:06), it=  +13: clk= 32005, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:38:09(+ 0:02:10), it=  +13: clk= 34235, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+ 0:39:58(+ 0:01:49), it=  +11: clk= 36123, SL= .0200, Pa= 2.034K, Po=      0, AAR=1.01e-08, BS= 7.52e-07
+Simulation finished in  0:39:58 H:M:S,
+
+Program executed in  0:40:01 H:M:S.
+2021-07-09 13:42:24: Program Terminated
