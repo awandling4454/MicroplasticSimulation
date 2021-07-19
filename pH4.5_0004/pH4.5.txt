@@ -1,0 +1,87 @@
+2021-07-19 19:55:56: Program Started
+Python version:
+ 3.7.9 (tags/v3.7.9:13c94747c7, Aug 17 2020, 18:58:18) [MSC v.1900 64 bit (AMD64)]
+Program version: 2.09
+The random number generator seed is 4733673820081093097
+parameters file is runParameters.txt.
+
+runParameters.txt file parameters:
+  Constants:
+    A= 2.75814e-21
+    boltz= 1.38e-23
+    fluidElictricalPermitivity= 7.60000e+01
+    fluidRefractiveIndex= 1.33000e+00
+    gravitationalConstant= 9.80000e+00
+    particleElictricalPermitivity= 2.30000e+00
+    planksConstant= 6.62607e-34
+    particleRefractiveIndex= 1.52500e+00
+    rotationalFrequency= 8.95000e-01
+
+  Simulation parameters:
+    addUniqueNumber= True
+    availableCpus= 1
+    downEscapedAggregates= 0
+    drying= False
+    dryingDelay= 0
+    fluidDensity=  1.00
+    generatePolymers= False
+    initialSolidsLoading= 0.0232
+    latticeConstant= 0.00e+00
+    minimumNumberOfCrossings= 3
+    particleCount= 2000
+    polymerizationTime=  0.0
+    polymerPercent= 0.00
+    simTime= 36000.0
+    temperature= 300C
+    variableLengthPolymers= False
+    writeDumpPolymers= False
+    writeDumpTangles= False
+
+  Particle parameters
+    particleRad= 1.00e-08
+    particleVolFrac= 0.02320
+    stericLayerThickness= 0.000e+00
+
+  Polymer parameters
+    monomerDiameter= 0.00e+00
+    monomerMolecularWeight= 0.000000
+    monomerRad= 0.00e+00
+    particleVolFrac= 0.00000
+    polymerLength=     0
+    polymerStiffness= 0.00
+
+  Program tuning Parameters
+    doMathIn= Float64
+    fileNameBase= Results/pH4.5_0004/pH4.5
+    generateBasePolymerCount= 0
+    polymersPerBin= 0
+    processOneBlockMaxSize= 10000
+    statInterval=  120
+
+  Debug Parameters
+    graphForcesTest= False
+    saveInitialAtoms= False
+    writeOnSL= []
+    writeParticlesEvery= 0.0
+
+Using 1 of 8 CPUs.
+2000 particles to generate. VolFrac = 0.023200
+0 polymers to generate. VolFrac = 0.000000
+
+Initialized particles.
+Creating Polymers.
+Finished creating Polymers.
+
+Running Simulation
+ 0:00:00(+ 0:00:00), it=   +0: clk= .0000, SL= .0232, Pa= 2.000K, Po=      0, AAR=1.00e-08, BS= 7.12e-07
+ 0:02:01(+ 0:02:01), it=  +38: clk=  5558, SL= .0232, Pa= 2.014K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+ 0:04:02(+ 0:02:01), it=  +39: clk= 11275, SL= .0232, Pa= 2.017K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+ 0:06:03(+ 0:02:01), it=  +38: clk= 16855, SL= .0232, Pa= 2.018K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+ 0:08:04(+ 0:02:01), it=  +40: clk= 22729, SL= .0232, Pa= 2.018K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+ 0:10:07(+ 0:02:03), it=  +41: clk= 28749, SL= .0232, Pa= 2.019K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+ 0:12:10(+ 0:02:03), it=  +40: clk= 34626, SL= .0232, Pa= 2.019K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+ 0:12:41(+ 0:00:31), it=  +10: clk= 36095, SL= .0232, Pa= 2.019K, Po=      0, AAR=1.00e-08, BS= 7.14e-07
+Simulation finished in  0:12:41 H:M:S,
+
+Program executed in  0:12:42 H:M:S.
+2021-07-19 20:08:39: Program Terminated
